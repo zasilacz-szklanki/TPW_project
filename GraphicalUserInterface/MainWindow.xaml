@@ -18,7 +18,7 @@
             <TextBlock Text="Number of Balls (1-10):" FontSize="20" Margin="0,0,15,0"/>
             <TextBox Name="NumberOfBallsTextBox" Width="60" Height="30" Margin="0,0,15,0"/>
             <TextBlock Name="ErrorMessageTextBlock" Foreground="#aa1155" FontSize="16" Margin="15,0,0,0"/>
-            <Button Content="Start" Width="80" Click="StartButton"/>
+            <Button Name="StartButton" Content="Start" Width="80" Click="StartButtonAction" IsEnabled="True"/>
         </StackPanel>
         <Viewbox Grid.Row="1" Stretch="Uniform">
             <Border BorderThickness="4" BorderBrush="Green" Height="420" Width="400">

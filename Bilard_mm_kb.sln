@@ -3,28 +3,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationView", "ReactiveInteractiveUserInterface\GraphicalUserInterface\PresentationView.csproj", "{0109D5AC-DA81-4E6E-AA70-D4AF4B7A10D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationView", "GraphicalUserInterface\PresentationView.csproj", "{0109D5AC-DA81-4E6E-AA70-D4AF4B7A10D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationViewModel", "ReactiveInteractiveUserInterface\PresentationViewModel\PresentationViewModel.csproj", "{B2380645-D767-4E38-835A-3CA87C22CD20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationViewModel", "PresentationViewModel\PresentationViewModel.csproj", "{B2380645-D767-4E38-835A-3CA87C22CD20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationModelTest", "ReactiveInteractiveUserInterface\PresentationModelTest\PresentationModelTest.csproj", "{51FE83FF-A0DF-4622-BBAF-78EA62BD2907}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationModelTest", "PresentationModelTest\PresentationModelTest.csproj", "{51FE83FF-A0DF-4622-BBAF-78EA62BD2907}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Project", ".Project", "{16A93E74-367C-42CC-A7C6-282B7594FDE9}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationViewModelTest", "ReactiveInteractiveUserInterface\PresentationViewModelTest\PresentationViewModelTest.csproj", "{8F68B3AE-490D-4B8D-A2C8-421E1D0DD6B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationViewModelTest", "PresentationViewModelTest\PresentationViewModelTest.csproj", "{8F68B3AE-490D-4B8D-A2C8-421E1D0DD6B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "ReactiveInteractiveUserInterface\Data\Data.csproj", "{3AA27DB8-F9C6-4587-8290-0FC0FEC69AC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{3AA27DB8-F9C6-4587-8290-0FC0FEC69AC2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationModel", "ReactiveInteractiveUserInterface\PresentationModel\PresentationModel.csproj", "{9B39E905-6C7C-4F2B-BD7A-77B7E3893F59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationModel", "PresentationModel\PresentationModel.csproj", "{9B39E905-6C7C-4F2B-BD7A-77B7E3893F59}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "ReactiveInteractiveUserInterface\BusinessLogic\BusinessLogic.csproj", "{BE3CC0CD-F262-4122-B7C7-F37EEB8F3C48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{BE3CC0CD-F262-4122-B7C7-F37EEB8F3C48}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicTest", "ReactiveInteractiveUserInterface\BusinessLogicTest\BusinessLogicTest.csproj", "{8760446B-8BD6-4254-9977-475EAEE45B0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{8760446B-8BD6-4254-9977-475EAEE45B0B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTest", "ReactiveInteractiveUserInterface\DataTest\DataTest.csproj", "{FD3FA340-EB7B-4037-B3AB-710E6817AC9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTest", "DataTest\DataTest.csproj", "{FD3FA340-EB7B-4037-B3AB-710E6817AC9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
