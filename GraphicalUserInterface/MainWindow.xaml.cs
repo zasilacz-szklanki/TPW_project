@@ -33,19 +33,5 @@ namespace TP.ConcurrentProgramming.PresentationView
                 viewModel.Dispose();
             base.OnClosed(e);
         }
-        private void StartButtonAction(object sender,RoutedEventArgs e)
-        {
-            if(int.TryParse(NumberOfBallsTextBox.Text,out int ballCount) && ballCount >= 1 && ballCount <= 10)
-            {
-                ErrorMessageTextBlock.Text = "";
-                MainWindowViewModel viewModel = (MainWindowViewModel)DataContext;
-                viewModel.Start(ballCount);
-                StartButton.IsEnabled=false;
-            }
-            else
-            {
-                ErrorMessageTextBlock.Text = "Please enter number between 1 and 10";
-            }
-        }
     }
 }

@@ -10,14 +10,14 @@
 
 namespace TP.ConcurrentProgramming.Data
 {
-    internal class Ball : IBall
+    internal class Ball:IBall
     {
         #region ctor
 
-        internal Ball(Vector initialPosition, Vector initialVelocity)
+        internal Ball(Vector initialPosition,Vector initialVelocity)
         {
-        Position = initialPosition;
-        Velocity = initialVelocity;
+            Position = initialPosition;
+            Velocity = initialVelocity;
         }
 
         #endregion ctor
@@ -36,33 +36,33 @@ namespace TP.ConcurrentProgramming.Data
 
         private void RaiseNewPositionChangeNotification()
         {
-        NewPositionNotification?.Invoke(this, Position);
+            NewPositionNotification?.Invoke(this,Position);
         }
 
         internal void Move(Vector delta)
         {
-        Position = new Vector(Position.x + delta.x, Position.y + delta.y);
-        RaiseNewPositionChangeNotification();
+            Position = new Vector(Position.x + delta.x,Position.y + delta.y);
+            RaiseNewPositionChangeNotification();
         }
 
         internal void MoveInBox()
         {
-        const int Width = 400;
-        const int Height = 420;
-        const int Diameter = 28;
+            const int Width = 400;
+            const int Height = 420;
+            const int Diameter = 28;
 
-        if (Position.x <= 4 || Position.x >= Width - Diameter)
-        {
-            Velocity = new Vector(-Velocity.x, Velocity.y);
-        }
+            if(Position.x <= 4 || Position.x >= Width - Diameter)
+            {
+                Velocity = new Vector(-Velocity.x,Velocity.y);
+            }
 
-        if (Position.y <= 4 || Position.y >= Height - Diameter)
-        {
-            Velocity = new Vector(Velocity.x, -Velocity.y);
-        }
+            if(Position.y <= 4 || Position.y >= Height - Diameter)
+            {
+                Velocity = new Vector(Velocity.x,-Velocity.y);
+            }
 
-        Position = new Vector(Position.x + Velocity.x, Position.y + Velocity.y);
-        RaiseNewPositionChangeNotification();
+            Position = new Vector(Position.x + Velocity.x,Position.y + Velocity.y);
+            RaiseNewPositionChangeNotification();
         }
 
         #endregion private
