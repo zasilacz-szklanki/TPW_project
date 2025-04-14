@@ -13,15 +13,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15" HorizontalAlignment="Center">
             <TextBlock Text="Number of Balls (1-10):" FontSize="20" Margin="0,0,15,0"/>
-            <TextBox Name="NumberOfBallsTextBox" Width="60" Height="30" Margin="0,0,15,0"/>
-            <TextBlock Name="ErrorMessageTextBlock" Foreground="#aa1155" FontSize="16" Margin="15,0,0,0"/>
+            <TextBox Name="NumberOfBallsTextBox" Width="60" Height="30" Margin="0,0,15,0" Text=""/>
             <Button Name="StartButton" Content="Start" Width="80" Click="StartButtonAction" IsEnabled="True"/>
         </StackPanel>
         <Viewbox Grid.Row="1" Stretch="Uniform">
-            <Border BorderThickness="4" BorderBrush="Green" Height="420" Width="400">
+            <Border BorderThickness="4" BorderBrush="#6c370d" Background="Green" Height="420" Width="400">
                 <ItemsControl ItemsSource="{Binding Balls}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -42,5 +42,9 @@
                 </ItemsControl>
             </Border>
         </Viewbox>
+        <TextBlock Grid.Row="2" Name="ErrorMessageTextBlock" 
+               Foreground="#aa1155" FontSize="16" 
+               Margin="5,10,0,0" TextWrapping="Wrap"
+               HorizontalAlignment="Center"/>
     </Grid>
 </Window>
