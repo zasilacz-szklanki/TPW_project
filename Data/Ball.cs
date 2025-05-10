@@ -39,13 +39,7 @@ namespace TP.ConcurrentProgramming.Data
             NewPositionNotification?.Invoke(this,Position);
         }
 
-        internal void Move(Vector delta)
-        {
-            Position = new Vector(Position.x + delta.x,Position.y + delta.y);
-            RaiseNewPositionChangeNotification();
-        }
-
-        internal void MoveInBox()
+        internal void Move()
         {
             const int Width = 400;
             const int Height = 420;
