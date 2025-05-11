@@ -18,6 +18,7 @@ namespace TP.ConcurrentProgramming.Data
         {
             Position = initialPosition;
             Velocity = initialVelocity;
+            isRunning = true;
         }
 
         #endregion ctor
@@ -33,6 +34,9 @@ namespace TP.ConcurrentProgramming.Data
         #region private
 
         private Vector Position;
+        private Thread? moveThread;
+        private volatile bool isRunning;
+        private bool disposed;
 
         private void RaiseNewPositionChangeNotification()
         {
@@ -45,6 +49,27 @@ namespace TP.ConcurrentProgramming.Data
             RaiseNewPositionChangeNotification();
         }
 
+        public void StartMoving(){ 
+            moveThread=new Thread(new ThreadStart(MoveContinuously));
+            moveThread.Start();
+        }
+
+        private void MoveContinuously(){
+            while(isRunning)
+            {
+                Move();
+                Thread.Sleep(30);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (disposed) return;
+            disposed = true;
+
+            isRunning = false;
+            moveThread?.Join();
+        }
         #endregion private
     }
 }

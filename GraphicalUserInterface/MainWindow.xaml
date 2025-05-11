@@ -21,7 +21,7 @@
             <Button Command="{Binding StartCommand}" Content="Start" Width="80"/>
         </StackPanel>
         <Viewbox Grid.Row="1" Stretch="Uniform">
-            <Border BorderThickness="4" BorderBrush="#6c370d" Background="Green" Height="420" Width="400">
+            <Border BorderThickness="4" BorderBrush="#6c370d" Background="White" Height="420" Width="400">
                 <ItemsControl ItemsSource="{Binding Balls}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

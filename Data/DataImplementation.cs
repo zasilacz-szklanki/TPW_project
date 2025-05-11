@@ -19,7 +19,7 @@ namespace TP.ConcurrentProgramming.Data
 
     public DataImplementation()
     {
-      MoveTimer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
+      //MoveTimer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
     }
 
     #endregion ctor
@@ -39,7 +39,15 @@ namespace TP.ConcurrentProgramming.Data
         Vector startingVelocity = new(random.Next(-10, 10), random.Next(-10, 10));
         Ball newBall = new(startingPosition, startingVelocity);
         upperLayerHandler(startingPosition, newBall);
-        BallsList.Add(newBall);
+
+        if(newBall is Ball ballImplementation){ 
+            ballImplementation.StartMoving();
+        }
+
+        lock(_lock){ 
+             BallsList.Add(newBall);                  
+         }
+        
       }
     }
 
@@ -53,8 +61,14 @@ namespace TP.ConcurrentProgramming.Data
       {
         if (disposing)
         {
-          MoveTimer.Dispose();
-          BallsList.Clear();
+          lock (_lock)
+            {
+                foreach (var ball in BallsList)
+                {
+                    ball.Dispose();
+                }
+                BallsList.Clear();
+            }
         }
         Disposed = true;
       }
@@ -76,15 +90,18 @@ namespace TP.ConcurrentProgramming.Data
     //private bool disposedValue;
     private bool Disposed = false;
 
-    private readonly Timer MoveTimer;
+    //private readonly Timer MoveTimer;
     private Random RandomGenerator = new();
     private List<Ball> BallsList = [];
+    private readonly object _lock = new();
 
+        /*
     private void Move(object? x)
     {
       foreach (Ball item in BallsList)
         item.Move();
     }
+        */
 
     #endregion private
 
