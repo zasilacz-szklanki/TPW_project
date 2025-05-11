@@ -43,7 +43,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
       if (upperLayerHandler == null)
         throw new ArgumentNullException(nameof(upperLayerHandler));
-      layerBellow.Start(numberOfBalls, (startingPosition, databall) => upperLayerHandler(new Position(startingPosition.x, startingPosition.x), new Ball(databall)));
+      layerBellow.Start(numberOfBalls, (position, dataBall) =>
+      {
+        var businessBall = new Ball(dataBall);
+        upperLayerHandler(new Position(position.x, position.y), businessBall);
+      });
     }
 
     #endregion BusinessLogicAbstractAPI

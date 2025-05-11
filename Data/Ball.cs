@@ -41,20 +41,6 @@ namespace TP.ConcurrentProgramming.Data
 
         internal void Move()
         {
-            const int Width = 400;
-            const int Height = 420;
-            const int Diameter = 28;
-
-            if(Position.x <= 4 || Position.x >= Width - Diameter)
-            {
-                Velocity = new Vector(-Velocity.x,Velocity.y);
-            }
-
-            if(Position.y <= 4 || Position.y >= Height - Diameter)
-            {
-                Velocity = new Vector(Velocity.x,-Velocity.y);
-            }
-
             Position = new Vector(Position.x + Velocity.x,Position.y + Velocity.y);
             RaiseNewPositionChangeNotification();
         }
