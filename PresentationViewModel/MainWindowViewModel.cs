@@ -127,8 +127,8 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
         #region Scaling
         private static double _tableSize = 0.7;
         private double _scale = _tableSize;
-        private double _windowWidth = 400;
-        private double _windowHeight = 420;
+        private double _windowWidth = 800;
+        private double _windowHeight = 840;
 
         public double Scale
         {
