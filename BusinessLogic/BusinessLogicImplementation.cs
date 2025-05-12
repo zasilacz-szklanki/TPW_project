@@ -11,7 +11,6 @@
 using System.Diagnostics;
 using UnderneathLayerAPI = TP.ConcurrentProgramming.Data.DataAbstractAPI;
 
-// BusinessLogic/BusinessLogicImplementation.cs
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
     internal class BusinessLogicImplementation : BusinessLogicAbstractAPI

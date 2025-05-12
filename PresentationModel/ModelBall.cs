@@ -13,12 +13,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using TP.ConcurrentProgramming.BusinessLogic;
+using LogicIBall = TP.ConcurrentProgramming.BusinessLogic.IBall;
 
 namespace TP.ConcurrentProgramming.Presentation.Model
 {
     internal class ModelBall : IBall
     {
-        public ModelBall(double top, double left, BusinessLogic.IBall underneathBall)
+        public ModelBall(double top, double left, LogicIBall underneathBall)
         {
             this.underneathBall = underneathBall;
             TopBackingField = top;
@@ -88,7 +89,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
 
         private double TopBackingField;
         private double LeftBackingField;
-        private readonly BusinessLogic.IBall underneathBall;
+        private readonly LogicIBall underneathBall;
 
         #endregion Private Fields
 

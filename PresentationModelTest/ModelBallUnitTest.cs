@@ -27,7 +27,6 @@ namespace TP.ConcurrentProgramming.Presentation.Model.Test
     [TestMethod]
     public void PositionChangeNotificationTestMethod()
     {
-        // Arrange
         int notificationCounter = 0;
         ModelBall ball = new ModelBall(0.0, 0.0, new BusinessLogicIBallFixture());
         ball.PropertyChanged += (sender, args) => notificationCounter++;
@@ -49,17 +48,16 @@ namespace TP.ConcurrentProgramming.Presentation.Model.Test
 
     private class BusinessLogicIBallFixture : BusinessLogic.IBall
     {
-        public double Radius => 14.0; // Zgodne z BallDiameter = 28 / 2
+        public double Radius => 14.0;
 
-        public double Mass => 1.0; // Stała wartość
+        public double Mass => 1.0;
 
-        public Data.IBall DataBall => throw new NotImplementedException(); // Nieistotne dla testów
+        public Data.IBall DataBall => throw new NotImplementedException();
 
         public event EventHandler<IPosition>? NewPositionNotification;
 
         public void Dispose()
         {
-            // Pusta implementacja
         }
     }
 

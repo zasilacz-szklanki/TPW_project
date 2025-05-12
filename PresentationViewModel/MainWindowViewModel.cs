@@ -124,6 +124,54 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
 
         #endregion IDisposable
 
+        #region Scaling
+        private static double _tableSize = 0.7;
+        private double _scale = _tableSize;
+        private double _windowWidth = 400;
+        private double _windowHeight = 420;
+
+        public double Scale
+        {
+            get => _scale;
+            set
+            {
+                _scale = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public double WindowWidth
+        {
+            get => _windowWidth;
+            set
+            {
+                _windowWidth = value;
+                RaisePropertyChanged();
+                UpdateScale();
+            }
+        }
+
+        public double WindowHeight
+        {
+            get => _windowHeight;
+            set
+            {
+                _windowHeight = value;
+                RaisePropertyChanged();
+                UpdateScale();
+            }
+        }
+
+        private void UpdateScale()
+        {
+            double baseWidth = 420;
+            double baseHeight = 400;
+            double scaleX = WindowWidth / baseWidth;
+            double scaleY = WindowHeight / baseHeight;
+            Scale = _tableSize * Math.Min(scaleX, scaleY);
+        }
+        #endregion Scaling
+
         #region private
 
         private IDisposable Observer = null;

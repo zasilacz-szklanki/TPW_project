@@ -8,7 +8,6 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
-// BusinessLogic/Ball.cs
 using System.Diagnostics;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
