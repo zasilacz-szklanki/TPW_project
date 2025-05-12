@@ -58,28 +58,26 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             Data.IVector x1 = dataBall.Position;
             Data.IVector x2 = other.DataBall.Position;
 
-            Data.Vector dx = new Data.Vector(x1.x - x2.x, x1.y - x2.y);
-            Data.Vector dv = new Data.Vector(v1.x - v2.x, v1.y - v2.y);
+            Data.Vector dx = x1.Sub(x2);
+            Data.Vector dv = v1.Sub(v2);
 
-            double dot = dx.x * dv.x + dx.y * dv.y;
-            if (dot >= 0) return;
+            double dot = dx.DotProd(dv);
 
             double m1 = Mass;
             double m2 = other.Mass;
-            double factor = 2 * m2 / (m1 + m2) * dot / (dx.x * dx.x + dx.y * dx.y);
+            double factor = 2 / (m1 + m2) * dot / dx.EuclideanNormSquared();
 
-            dataBall.Velocity = new Data.Vector(v1.x - factor * dx.x, v1.y - factor * dx.y);
-            other.DataBall.Velocity = new Data.Vector(v2.x + factor * dx.x * m1 / m2, v2.y + factor * dx.y * m1 / m2);
-
-            double distance = Math.Sqrt(dx.x * dx.x + dx.y * dx.y);
+            dataBall.Velocity = v1.Sub(dx.Mul(factor*m2));
+            other.DataBall.Velocity = v2.Add(dx.Mul(factor*m1));
+            
+            double distance = dx.EuclideanNorm();
             double overlap = (Radius + other.Radius) - distance;
             if (overlap > 0)
             {
-                double nx = dx.x / distance;
-                double ny = dx.y / distance;
+                Data.Vector n=dx.Div(distance);
                 double correctionFactor = overlap / (m1 + m2);
-                dataBall.Position = new Data.Vector(x1.x + nx * correctionFactor * m2, x1.y + ny * correctionFactor * m2);
-                other.DataBall.Position = new Data.Vector(x2.x - nx * correctionFactor * m1, x2.y - ny * correctionFactor * m1);
+                dataBall.Position = x1.Add(n.Mul(correctionFactor*m2));
+                other.DataBall.Position = x2.Sub(n.Mul(correctionFactor*m1));
             }
         }
 

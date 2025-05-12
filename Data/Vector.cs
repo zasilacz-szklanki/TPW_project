@@ -37,5 +37,27 @@ namespace TP.ConcurrentProgramming.Data
       x = XComponent;
       y = YComponent;
     }
+
+    public Vector Add(IVector other){ 
+      return new Vector(x+other.x,y+other.y);          
+    }
+    public Vector Sub(IVector other){ 
+      return new Vector(x-other.x,y-other.y);          
+    }
+    public Vector Mul(double lambda){ 
+      return new Vector(x*lambda,y*lambda);
+    }
+    public Vector Div(double lambda){ 
+      return new Vector(x/lambda,y/lambda);
+    }
+    public double DotProd(IVector other){ 
+      return x*other.x+y*other.y;
+    }
+    public double EuclideanNorm(){ 
+      return Math.Sqrt(x*x+y*y);
+    }
+    public double EuclideanNormSquared(){ 
+      return x*x+y*y;
+    }
   }
 }

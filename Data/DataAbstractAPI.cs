@@ -51,6 +51,12 @@ namespace TP.ConcurrentProgramming.Data
     /// The y component of the vector.
     /// </summary>
     double y { get; init; }
+    public Vector Add(IVector other);
+    public Vector Sub(IVector other);
+    public Vector Mul(double lambda);
+    public Vector Div(double lambda);
+    public double DotProd(IVector other);
+    public double EuclideanNorm();
   }
 
   public interface IBall

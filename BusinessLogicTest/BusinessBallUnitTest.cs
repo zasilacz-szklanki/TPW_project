@@ -70,7 +70,37 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
       public double x { get; init; }
       public double y { get; init; }
-    }
+
+            public Data.Vector Add(Data.IVector other)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Data.Vector Div(double lambda)
+            {
+                throw new NotImplementedException();
+            }
+
+            public double DotProd(Data.IVector other)
+            {
+                throw new NotImplementedException();
+            }
+
+            public double EuclideanNorm()
+            {
+                throw new NotImplementedException();
+            }
+
+            public Data.Vector Mul(double lambda)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Data.Vector Sub(Data.IVector other)
+            {
+                throw new NotImplementedException();
+            }
+        }
 
     #endregion testing instrumentation
   }

@@ -110,7 +110,37 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         {
             public double x { get; init; } = 0.0;
             public double y { get; init; } = 0.0;
-        }
+
+                public Vector Add(IVector other)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public Vector Div(double lambda)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public double DotProd(IVector other)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public double EuclideanNorm()
+                {
+                    throw new NotImplementedException();
+                }
+
+                public Vector Mul(double lambda)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public Vector Sub(IVector other)
+                {
+                    throw new NotImplementedException();
+                }
+            }
 
         private class DataBallFixture : Data.IBall
         {
