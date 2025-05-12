@@ -35,16 +35,19 @@ namespace TP.ConcurrentProgramming.Data
       Random random = new Random();
       for (int i = 0; i < numberOfBalls; i++)
       {
+        //Vector startingPosition = new(0, 0);
         Vector startingPosition = new(random.Next(100, 400 - 100), random.Next(100, 400 - 100));
-        Vector startingVelocity = new(random.Next(-10, 10), random.Next(-10, 10));
-        Ball newBall = new(startingPosition, startingVelocity);
+        //Vector startingVelocity = new(0, 0);
+        Vector startingVelocity = new(random.Next(-2, 2), random.Next(-2, 2));
+        double mass = 1.0;
+        Ball newBall = new(startingPosition, startingVelocity, mass);
         upperLayerHandler(startingPosition, newBall);
 
         if(newBall is Ball ballImplementation){ 
             ballImplementation.StartMoving();
         }
 
-        lock(_lock){ 
+        lock(locker){ 
              BallsList.Add(newBall);                  
          }
         
@@ -61,7 +64,7 @@ namespace TP.ConcurrentProgramming.Data
       {
         if (disposing)
         {
-          lock (_lock)
+          lock (locker)
             {
                 foreach (var ball in BallsList)
                 {
@@ -71,6 +74,7 @@ namespace TP.ConcurrentProgramming.Data
             }
         }
         Disposed = true;
+        GC.SuppressFinalize(this);
       }
       else
         throw new ObjectDisposedException(nameof(DataImplementation));
@@ -93,7 +97,7 @@ namespace TP.ConcurrentProgramming.Data
     //private readonly Timer MoveTimer;
     private Random RandomGenerator = new();
     private List<Ball> BallsList = [];
-    private readonly object _lock = new();
+    private readonly object locker = new();
 
         /*
     private void Move(object? x)

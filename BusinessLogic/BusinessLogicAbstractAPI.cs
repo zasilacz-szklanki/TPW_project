@@ -61,5 +61,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
   public interface IBall 
   {
     event EventHandler<IPosition> NewPositionNotification;
+    double Radius { get; }
+    double Mass { get; }
+    Data.IBall DataBall { get; }
+    void Dispose();
   }
 }

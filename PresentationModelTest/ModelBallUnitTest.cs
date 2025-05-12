@@ -20,36 +20,47 @@ namespace TP.ConcurrentProgramming.Presentation.Model.Test
     {
       ModelBall ball = new ModelBall(0.0, 0.0, new BusinessLogicIBallFixture());
       Assert.AreEqual<double>(0.0, ball.Top);
-      Assert.AreEqual<double>(0.0, ball.Top);
+      Assert.AreEqual<double>(0.0, ball.Left);
+      Assert.AreEqual<double>(28.0, ball.Diameter);
     }
 
     [TestMethod]
     public void PositionChangeNotificationTestMethod()
     {
-      int notificationCounter = 0;
-      ModelBall ball = new ModelBall(0, 0.0, new BusinessLogicIBallFixture());
-      ball.PropertyChanged += (sender, args) => notificationCounter++;
-      Assert.AreEqual(0, notificationCounter);
-      ball.SetLeft(1.0);
-      Assert.AreEqual<int>(1, notificationCounter);
-      Assert.AreEqual<double>(1.0, ball.Left);
-      Assert.AreEqual<double>(0.0, ball.Top);
-      ball.SettTop(1.0);
-      Assert.AreEqual(2, notificationCounter);
-      Assert.AreEqual<double>(1.0, ball.Left);
-      Assert.AreEqual<double>(1.0, ball.Top);
+        // Arrange
+        int notificationCounter = 0;
+        ModelBall ball = new ModelBall(0.0, 0.0, new BusinessLogicIBallFixture());
+        ball.PropertyChanged += (sender, args) => notificationCounter++;
+
+        Assert.AreEqual(0, notificationCounter);
+
+        ball.SetLeft(1.0);
+        Assert.AreEqual(1, notificationCounter);
+        Assert.AreEqual(1.0, ball.Left);
+        Assert.AreEqual(0.0, ball.Top);
+
+        ball.SetTop(1.0);
+        Assert.AreEqual(2, notificationCounter);
+        Assert.AreEqual(1.0, ball.Left);
+        Assert.AreEqual(1.0, ball.Top);
     }
 
     #region testing instrumentation
 
     private class BusinessLogicIBallFixture : BusinessLogic.IBall
     {
-      public event EventHandler<IPosition>? NewPositionNotification;
+        public double Radius => 14.0; // Zgodne z BallDiameter = 28 / 2
 
-      public void Dispose()
-      {
-        throw new NotImplementedException();
-      }
+        public double Mass => 1.0; // Stała wartość
+
+        public Data.IBall DataBall => throw new NotImplementedException(); // Nieistotne dla testów
+
+        public event EventHandler<IPosition>? NewPositionNotification;
+
+        public void Dispose()
+        {
+            // Pusta implementacja
+        }
     }
 
     #endregion testing instrumentation

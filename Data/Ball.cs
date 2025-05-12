@@ -8,68 +8,69 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
+// Data/Ball.cs
 namespace TP.ConcurrentProgramming.Data
 {
-    internal class Ball:IBall
+    internal class Ball : IBall
     {
-        #region ctor
-
-        internal Ball(Vector initialPosition,Vector initialVelocity)
-        {
-            Position = initialPosition;
-            Velocity = initialVelocity;
-            isRunning = true;
-        }
-
-        #endregion ctor
-
-        #region IBall
-
-        public event EventHandler<IVector>? NewPositionNotification;
-
+        public event EventHandler<IVector> NewPositionNotification;
         public IVector Velocity { get; set; }
+        public IVector Position { get; set; }
+        public double Mass { get; }
+        public double Radius { get; } = 10.0;
+        public double TableWidth { get; } = 400.0;
+        public double TableHeight { get; } = 420.0;
 
-        #endregion IBall
-
-        #region private
-
-        private Vector Position;
         private Thread? moveThread;
         private volatile bool isRunning;
         private bool disposed;
 
-        private void RaiseNewPositionChangeNotification()
+        internal Ball(IVector initialPosition, IVector initialVelocity, double mass)
         {
-            NewPositionNotification?.Invoke(this,Position);
+            Position = initialPosition;
+            Velocity = initialVelocity;
+            Mass = mass;
+            isRunning = true;
         }
 
         internal void Move()
         {
-            Position = new Vector(Position.x + Velocity.x,Position.y + Velocity.y);
-            RaiseNewPositionChangeNotification();
+            Position = new Vector(Position.x + Velocity.x, Position.y + Velocity.y);
+            NewPositionNotification?.Invoke(this, Position);
         }
 
-        public void StartMoving(){ 
-            moveThread=new Thread(new ThreadStart(MoveContinuously));
-            moveThread.Start();
+        public void StartMoving()
+        {
+            if (moveThread == null)
+            {
+                moveThread = new Thread(new ThreadStart(MoveContinuously))
+                {
+                    IsBackground = true
+                };
+                moveThread.Start();
+            }
         }
 
-        private void MoveContinuously(){
-            while(isRunning)
+        private void MoveContinuously()
+        {
+            while (isRunning)
             {
                 Move();
                 Thread.Sleep(30);
-            }
+            }          
         }
 
         public void Dispose()
         {
             if (disposed) return;
             disposed = true;
-
             isRunning = false;
-            moveThread?.Join();
+
+            if (moveThread != null && moveThread.IsAlive)
+            {
+                moveThread?.Join();
+            }
+            moveThread = null;
         }
-        #endregion private
     }
 }
