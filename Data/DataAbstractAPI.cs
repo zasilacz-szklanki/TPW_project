@@ -55,13 +55,8 @@ namespace TP.ConcurrentProgramming.Data
   public interface IBall
   {
     event EventHandler<IVector> NewPositionNotification;
-
-    IVector Position { get; set; }
     IVector Velocity { get; set; }
-    double Mass { get; }
     double Radius { get; }
-    double TableWidth { get; }
-    double TableHeight { get; }
     void Dispose();
   }
 }

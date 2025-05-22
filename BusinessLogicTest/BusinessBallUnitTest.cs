@@ -37,27 +37,15 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         get => _velocity;
         set => _velocity = value;
       }
-        public Data.IVector Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+      public double Radius => throw new NotImplementedException();
+      public event EventHandler<Data.IVector>? NewPositionNotification;
 
-        public double Mass => throw new NotImplementedException();
+      public void Dispose() { }
 
-        public double Radius => throw new NotImplementedException();
-
-        public double TableWidth => throw new NotImplementedException();
-
-        public double TableHeight => throw new NotImplementedException();
-
-        public event EventHandler<Data.IVector>? NewPositionNotification;
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void Move()
-            {
-            NewPositionNotification?.Invoke(this, new VectorFixture(10.0, 10.0));
-            }
+      internal void Move()
+      {
+        NewPositionNotification?.Invoke(this, new VectorFixture(1.0, 1.0));
+      }
     }
 
     private class VectorFixture : Data.IVector

@@ -37,8 +37,7 @@ namespace TP.ConcurrentProgramming.Data
         Vector startingPosition = new(random.Next(100, 400 - 100), random.Next(100, 400 - 100));
         //Vector startingVelocity = new(0, 0);
         Vector startingVelocity = new(random.Next(-2, 2), random.Next(-2, 2));
-        double mass = 1.0;
-        Ball newBall = new(startingPosition, startingVelocity, mass);
+        Ball newBall = new(startingPosition, startingVelocity);
         upperLayerHandler(startingPosition, newBall);
 
         if(newBall is Ball ballImplementation){ 
@@ -48,7 +47,6 @@ namespace TP.ConcurrentProgramming.Data
         lock(locker){ 
              BallsList.Add(newBall);                  
          }
-        
       }
     }
 

@@ -14,12 +14,15 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 {
     internal class Ball : IBall
     {
+        private Data.IVector currentPosition;
+
         public Ball(Data.IBall ball, List<IBall> otherBallsList, object sharedLock)
         {
             dataBall = ball;
             otherBalls = otherBallsList;
             locker = sharedLock;
-            dataBall.NewPositionNotification += RaisePositionChangeEvent;
+            currentPosition = new Data.Vector(0, 0); // Initial position
+            dataBall.NewPositionNotification += (s, pos) => { currentPosition = pos; RaisePositionChangeEvent(s, pos); };
             collisionCts = new CancellationTokenSource();
             collisionTask = Task.Run(() => CollisionDetection(collisionCts.Token), collisionCts.Token);
         }
@@ -27,7 +30,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         #region IBall
         public event EventHandler<IPosition>? NewPositionNotification;
         public double Radius => dataBall.Radius;
-        public double Mass => dataBall.Mass;
         public Data.IBall DataBall => dataBall;
         public void Dispose()
         {
@@ -54,39 +56,29 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             Data.IVector v1 = dataBall.Velocity;
             Data.IVector v2 = other.DataBall.Velocity;
-            Data.IVector x1 = dataBall.Position;
-            Data.IVector x2 = other.DataBall.Position;
+            Data.IVector x1 = currentPosition;
+            Data.IVector x2 = ((Ball)other).currentPosition;
 
             Data.Vector dx = x1.Sub(x2);
             Data.Vector dv = v1.Sub(v2);
 
             double dot = dx.DotProd(dv);
 
-            double m1 = Mass;
-            double m2 = other.Mass;
-            double factor = 2 / (m1 + m2) * dot / dx.EuclideanNormSquared();
+            // Using m1 = m2 = 1 for equal masses
+            double factor = 2 / (1 + 1) * dot / dx.EuclideanNormSquared();
 
-            dataBall.Velocity = v1.Sub(dx.Mul(factor*m2));
-            other.DataBall.Velocity = v2.Add(dx.Mul(factor*m1));
-            
-            double distance = dx.EuclideanNorm();
-            double overlap = (Radius + other.Radius) - distance;
-            if (overlap > 0)
-            {
-                Data.Vector n=dx.Div(distance);
-                double correctionFactor = overlap / (m1 + m2);
-                dataBall.Position = x1.Add(n.Mul(correctionFactor*m2));
-                other.DataBall.Position = x2.Sub(n.Mul(correctionFactor*m1));
-            }
+            dataBall.Velocity = v1.Sub(dx.Mul(factor * 1));  // m2 = 1
+            other.DataBall.Velocity = v2.Add(dx.Mul(factor * 1));  // m1 = 1
         }
 
         internal void CheckWallCollision()
         {
-            double tableWidth = dataBall.TableWidth;
-            double tableHeight = dataBall.TableHeight;
+            var dimensions = BusinessLogicAbstractAPI.GetDimensions;
+            double tableWidth = dimensions.TableWidth;
+            double tableHeight = dimensions.TableHeight;
 
-            double newX = dataBall.Position.x + dataBall.Velocity.x;
-            double newY = dataBall.Position.y + dataBall.Velocity.y;
+            double newX = currentPosition.x + dataBall.Velocity.x;
+            double newY = currentPosition.y + dataBall.Velocity.y;
             double newVx = dataBall.Velocity.x;
             double newVy = dataBall.Velocity.y;
 
@@ -96,18 +88,18 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             if (newX <= min || newX >= maxX)
             {
-                newVx = -newVx;
-                newX = Math.Clamp(newX, min, maxX);
+                newVx = -newVx;  // Reverse x velocity on wall collision
             }
 
             if (newY <= min || newY >= maxY)
             {
-                newVy = -newVy;
-                newY = Math.Clamp(newY, min, maxY);
+                newVy = -newVy;  // Reverse y velocity on wall collision
             }
 
-            dataBall.Position = new Data.Vector(newX, newY);
-            dataBall.Velocity = new Data.Vector(newVx, newVy);
+            if (newVx != dataBall.Velocity.x || newVy != dataBall.Velocity.y)
+            {
+                dataBall.Velocity = new Data.Vector(newVx, newVy);
+            }
         }
         #endregion
 
@@ -131,12 +123,25 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                         foreach (var otherBall in otherBalls)
                         {
                             if (otherBall == this) continue;
-                            double dx = dataBall.Position.x - otherBall.DataBall.Position.x;
-                            double dy = dataBall.Position.y - otherBall.DataBall.Position.y;
+                            
+                            // Calculate distance between balls
+                            double dx = currentPosition.x - ((Ball)otherBall).currentPosition.x;
+                            double dy = currentPosition.y - ((Ball)otherBall).currentPosition.y;
                             double distance = Math.Sqrt(dx * dx + dy * dy);
-                            if (distance < Radius + otherBall.Radius)
+                            
+                            // Check if balls are colliding (distance less than sum of radii)
+                            double minDistance = Radius + otherBall.Radius;
+                            if (distance < minDistance)
                             {
-                                CheckBallCollision(otherBall);
+                                // Process collision if balls are moving towards each other
+                                double relativeVelocityX = dataBall.Velocity.x - otherBall.DataBall.Velocity.x;
+                                double relativeVelocityY = dataBall.Velocity.y - otherBall.DataBall.Velocity.y;
+                                double approachSpeed = (dx * relativeVelocityX + dy * relativeVelocityY) / distance;
+                                
+                                if (approachSpeed < 0)  // Balls are moving towards each other
+                                {
+                                    CheckBallCollision(otherBall);
+                                }
                             }
                         }
                     }
