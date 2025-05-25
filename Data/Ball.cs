@@ -47,7 +47,7 @@ namespace TP.ConcurrentProgramming.Data
             while (!cancellationToken.IsCancellationRequested)
             {
                 Move();
-                await Task.Delay(30, cancellationToken);
+                await Task.Delay((int)(30.0/(Velocity.EuclideanNorm()+0.01)), cancellationToken);
             }
         }
 
