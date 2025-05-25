@@ -154,7 +154,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
             public void Dispose()
             { }
-        }
+
+                public void setVelocity(IVector velocity)
+                {
+                    throw new NotImplementedException();
+                }
+            }
     }
     #endregion testing instrumentation
   }

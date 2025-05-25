@@ -42,7 +42,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
       public void Dispose() { }
 
-      internal void Move()
+            public void setVelocity(Data.IVector velocity)
+            {
+                throw new NotImplementedException();
+            }
+
+            internal void Move()
       {
         NewPositionNotification?.Invoke(this, new VectorFixture(1.0, 1.0));
       }

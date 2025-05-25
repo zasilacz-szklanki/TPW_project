@@ -9,6 +9,7 @@
 //_____________________________________________________________________________________________________________________________________
 
 using System.Diagnostics;
+using TP.ConcurrentProgramming.Data;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
@@ -66,8 +67,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             double factor = 2 / (1 + 1) * dot / dx.EuclideanNormSquared();
 
-            dataBall.Velocity = v1.Sub(dx.Mul(factor * 1));
-            other.DataBall.Velocity = v2.Add(dx.Mul(factor * 1));
+            dataBall.setVelocity(v1.Sub(dx.Mul(factor * 1)));
+            other.DataBall.setVelocity(v2.Add(dx.Mul(factor * 1)));
         }
 
         internal void CheckWallCollision()
@@ -78,8 +79,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             double newX = currentPosition.x + dataBall.Velocity.x;
             double newY = currentPosition.y + dataBall.Velocity.y;
-            double newVx = dataBall.Velocity.x;
-            double newVy = dataBall.Velocity.y;
+            IVector newV = dataBall.Velocity;
 
             double min = 0;
             double maxX = tableWidth - Radius * 2 - 4;
@@ -87,17 +87,17 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             if (newX <= min || newX >= maxX)
             {
-                newVx = -newVx;
+                newV = new Vector(-newV.x,newV.y);
             }
 
             if (newY <= min || newY >= maxY)
             {
-                newVy = -newVy;
+                newV = new Vector(newV.x,-newV.y);
             }
 
-            if (newVx != dataBall.Velocity.x || newVy != dataBall.Velocity.y)
+            if (newV != dataBall.Velocity)
             {
-                dataBall.Velocity = new Data.Vector(newVx, newVy);
+                dataBall.setVelocity(newV);
             }
         }
         #endregion

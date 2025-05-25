@@ -75,5 +75,10 @@ namespace TP.ConcurrentProgramming.Data
                 }
             }
         }
+
+        public void setVelocity(IVector velocity)
+        { 
+            Velocity=velocity;
+        }
     }
 }
