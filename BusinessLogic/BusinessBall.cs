@@ -21,7 +21,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             dataBall = ball;
             otherBalls = otherBallsList;
             locker = sharedLock;
-            currentPosition = new Data.Vector(0, 0); // Initial position
+            currentPosition = new Data.Vector(0, 0);
             dataBall.NewPositionNotification += (s, pos) => { currentPosition = pos; RaisePositionChangeEvent(s, pos); };
             collisionCts = new CancellationTokenSource();
             collisionTask = Task.Run(() => CollisionDetection(collisionCts.Token), collisionCts.Token);
@@ -64,11 +64,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             double dot = dx.DotProd(dv);
 
-            // Using m1 = m2 = 1 for equal masses
             double factor = 2 / (1 + 1) * dot / dx.EuclideanNormSquared();
 
-            dataBall.Velocity = v1.Sub(dx.Mul(factor * 1));  // m2 = 1
-            other.DataBall.Velocity = v2.Add(dx.Mul(factor * 1));  // m1 = 1
+            dataBall.Velocity = v1.Sub(dx.Mul(factor * 1));
+            other.DataBall.Velocity = v2.Add(dx.Mul(factor * 1));
         }
 
         internal void CheckWallCollision()
@@ -88,12 +87,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             if (newX <= min || newX >= maxX)
             {
-                newVx = -newVx;  // Reverse x velocity on wall collision
+                newVx = -newVx;
             }
 
             if (newY <= min || newY >= maxY)
             {
-                newVy = -newVy;  // Reverse y velocity on wall collision
+                newVy = -newVy;
             }
 
             if (newVx != dataBall.Velocity.x || newVy != dataBall.Velocity.y)
@@ -124,21 +123,18 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                         {
                             if (otherBall == this) continue;
                             
-                            // Calculate distance between balls
                             double dx = currentPosition.x - ((Ball)otherBall).currentPosition.x;
                             double dy = currentPosition.y - ((Ball)otherBall).currentPosition.y;
                             double distance = Math.Sqrt(dx * dx + dy * dy);
                             
-                            // Check if balls are colliding (distance less than sum of radii)
                             double minDistance = Radius + otherBall.Radius;
                             if (distance < minDistance)
                             {
-                                // Process collision if balls are moving towards each other
                                 double relativeVelocityX = dataBall.Velocity.x - otherBall.DataBall.Velocity.x;
                                 double relativeVelocityY = dataBall.Velocity.y - otherBall.DataBall.Velocity.y;
                                 double approachSpeed = (dx * relativeVelocityX + dy * relativeVelocityY) / distance;
                                 
-                                if (approachSpeed < 0)  // Balls are moving towards each other
+                                if (approachSpeed < 0)
                                 {
                                     CheckBallCollision(otherBall);
                                 }
