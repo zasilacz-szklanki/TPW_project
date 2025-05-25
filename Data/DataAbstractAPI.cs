@@ -52,11 +52,10 @@ namespace TP.ConcurrentProgramming.Data
     public double EuclideanNorm();
   }
 
-  public interface IBall
+  public interface IBall:IDisposable
   {
     event EventHandler<IVector> NewPositionNotification;
     IVector Velocity { get; set; }
     double Radius { get; }
-    void Dispose();
   }
 }
