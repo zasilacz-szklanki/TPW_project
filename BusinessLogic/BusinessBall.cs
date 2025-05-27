@@ -35,7 +35,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         #region IBall
         public event EventHandler<IPosition>? NewPositionNotification;
-        public double Radius => dataBall.Radius;
+        public double Radius { get; } = BusinessLogicAbstractAPI.GetDimensions.BallDimension / 2.0;
         public Data.IBall DataBall => dataBall;
 
         // to consider
@@ -166,7 +166,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                             }
                             double distance = delta.EuclideanNorm();
 
-                            double minDistance = Radius + otherBall.Radius;
+                            double minDistance = Radius * 2;
                             if (distance < minDistance)
                             {
                                 Vector relativeVelocity;

@@ -55,8 +55,6 @@ namespace TP.ConcurrentProgramming.Data
             }
         }
 
-        public double Radius { get; } = 10.0;
-
         #endregion IBall
 
         private IVector position;
