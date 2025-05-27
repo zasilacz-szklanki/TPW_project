@@ -12,26 +12,75 @@ namespace TP.ConcurrentProgramming.Data
 {
     internal class Ball : IBall
     {
-        public event EventHandler<IVector> NewPositionNotification;
-        public IVector Velocity { get; set; }
-        public double Radius { get; } = 10.0;
-
-        private Vector Position;
-        private Task? moveTask;
-        private CancellationTokenSource? cancellationTokenSource;
-        private bool disposed;
-
         internal Ball(Vector initialPosition, Vector initialVelocity)
         {
-            Position = initialPosition;
-            Velocity = initialVelocity;
+            position = initialPosition;
+            velocity = initialVelocity;
             cancellationTokenSource = new CancellationTokenSource();
         }
 
+        public event EventHandler<IVector> NewPositionNotification;
+
+        #region IBall
+
+        public IVector Velocity
+        { 
+            get
+            {
+                // to consider
+                lock (velocityLock)
+                {
+                    return velocity;
+                }
+            }
+
+            set
+            {
+                lock(velocityLock)
+                {
+                    velocity = value;
+                }
+            }
+        }
+
+        public IVector Position
+        {
+            get
+            {
+                // to consider
+                lock(positionLock)
+                {
+                    return position;
+                }
+            }
+        }
+
+        public double Radius { get; } = 10.0;
+
+        #endregion IBall
+
+        private IVector position;
+        private IVector velocity;
+        private Task? moveTask;
+        private CancellationTokenSource? cancellationTokenSource;
+        private bool disposed;
+        private readonly object velocityLock = new object();
+        private readonly object positionLock = new object();
+
         internal void Move()
         {
-            Position = new Vector(Position.x + Velocity.x, Position.y + Velocity.y);
-            NewPositionNotification?.Invoke(this, Position);
+            IVector currentVelocity;
+            lock (velocityLock)
+            {
+                currentVelocity = velocity;
+            }
+            IVector newPosition;
+            lock(positionLock)
+            {
+                newPosition = position.Add(currentVelocity);
+                position = newPosition;
+                NewPositionNotification?.Invoke(this, position);
+            }
         }
 
         public void StartMoving()
@@ -47,7 +96,12 @@ namespace TP.ConcurrentProgramming.Data
             while (!cancellationToken.IsCancellationRequested)
             {
                 Move();
-                await Task.Delay((int)(30.0/(Velocity.EuclideanNorm()+0.01)), cancellationToken);
+                IVector currentVelocity;
+                lock (velocityLock)
+                {
+                    currentVelocity = velocity;
+                }
+                await Task.Delay((int)(30.0/(currentVelocity.EuclideanNorm()+0.01)), cancellationToken);
             }
         }
 
@@ -74,11 +128,6 @@ namespace TP.ConcurrentProgramming.Data
                     moveTask = null;
                 }
             }
-        }
-
-        public void setVelocity(IVector velocity)
-        { 
-            Velocity=velocity;
         }
     }
 }
