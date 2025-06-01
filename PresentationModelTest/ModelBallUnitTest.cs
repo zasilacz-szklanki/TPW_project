@@ -9,6 +9,7 @@
 //_____________________________________________________________________________________________________________________________________
 
 using TP.ConcurrentProgramming.BusinessLogic;
+using TP.ConcurrentProgramming.Data;
 
 namespace TP.ConcurrentProgramming.Presentation.Model.Test
 {
@@ -59,7 +60,12 @@ namespace TP.ConcurrentProgramming.Presentation.Model.Test
         public void Dispose()
         {
         }
-    }
+
+            public IVector GetCurrentPosition()
+            {
+                throw new NotImplementedException();
+            }
+        }
 
     #endregion testing instrumentation
   }

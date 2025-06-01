@@ -38,7 +38,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         set => _velocity = value;
       }
       public double Radius => throw new NotImplementedException();
-      public event EventHandler<Data.IVector>? NewPositionNotification;
+
+            public Data.IVector Position => throw new NotImplementedException();
+
+            public event EventHandler<Data.IVector>? NewPositionNotification;
 
       public void Dispose() { }
 

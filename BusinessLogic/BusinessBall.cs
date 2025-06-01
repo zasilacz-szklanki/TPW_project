@@ -23,7 +23,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             currentPosition = new Data.Vector(0, 0);
             dataBall.NewPositionNotification += (s, pos) =>
             {
-                lock (positionLock)
+                lock (locker)
                 {
                     currentPosition = pos;
                     RaisePositionChangeEvent(s, pos);
@@ -41,7 +41,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         // to consider
         public IVector GetCurrentPosition()
         {
-            lock (positionLock)
+            lock (locker)
             {
                 return currentPosition;
             }
@@ -70,26 +70,20 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         internal void CheckBallCollision(IBall other)
         {
             Data.IVector v1, v2;
-            lock (velocityLock)
+            Data.IVector x1, x2;
+            lock (locker)
             {
                 v1 = dataBall.Velocity;
                 v2 = other.DataBall.Velocity;
-            }
-            Data.IVector x1, x2;
-            lock (positionLock)
-            {
                 x1 = currentPosition;
                 x2 = other.GetCurrentPosition();
-            }
 
-            Data.Vector dx = x1.Sub(x2);
-            Data.Vector dv = v1.Sub(v2);
+                Data.Vector dx = x1.Sub(x2);
+                Data.Vector dv = v1.Sub(v2);
 
-            double dot = dx.DotProd(dv);
-            double factor = dot / dx.EuclideanNormSquared();
+                double dot = dx.DotProd(dv);
+                double factor = dot / dx.EuclideanNormSquared();
 
-            lock (velocityLock)
-            {
                 dataBall.Velocity = v1.Sub(dx.Mul(factor * 1));
                 other.DataBall.Velocity = v2.Add(dx.Mul(factor * 1));
             }
@@ -101,33 +95,27 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             Vector position;
             Data.IVector velocity;
-            lock (positionLock)
+            lock (locker)
             {
                 position = currentPosition.Add(dataBall.Velocity);
-            }
-            lock (velocityLock)
-            {
                 velocity = dataBall.Velocity;
-            }
 
-            IVector newV = dataBall.Velocity;
-            double min = 0;
-            double maxX = dimensions.TableWidth - Radius * 2 - 4;
-            double maxY = dimensions.TableHeight - Radius * 2 - 4;
+                IVector newV = velocity;
+                double min = 0;
+                double maxX = dimensions.TableWidth - Radius * 2 - 4;
+                double maxY = dimensions.TableHeight - Radius * 2 - 4;
 
-            if (position.x <= min || position.x >= maxX)
-            {
-                newV = new Vector(-newV.x,newV.y);
-            }
+                if (position.x <= min || position.x >= maxX)
+                {
+                    newV = new Vector(-newV.x,newV.y);
+                }
 
-            if (position.y <= min || position.y >= maxY)
-            {
-                newV = new Vector(newV.x,-newV.y);
-            }
+                if (position.y <= min || position.y >= maxY)
+                {
+                    newV = new Vector(newV.x,-newV.y);
+                }
 
-            if (newV != velocity)
-            {
-                lock (velocityLock)
+                if (newV != velocity)
                 {
                     dataBall.Velocity = newV;
                 }
@@ -143,8 +131,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private readonly CancellationTokenSource collisionCts;
         private bool _disposed = false;
         private Data.IVector currentPosition;
-        private readonly object positionLock = new object();
-        private readonly object velocityLock = new object();
 
         private async Task CollisionDetection(CancellationToken cancellationToken)
         {
@@ -160,21 +146,14 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                             if (otherBall == this) continue;
 
                             Vector delta;
-                            lock (positionLock)
-                            {
-                                delta = currentPosition.Sub(otherBall.GetCurrentPosition());
-                            }
+                            delta = currentPosition.Sub(otherBall.GetCurrentPosition());
                             double distance = delta.EuclideanNorm();
 
                             double minDistance = Radius * 2;
                             if (distance < minDistance)
                             {
                                 Vector relativeVelocity;
-                                lock (velocityLock)
-                                {
-                                    relativeVelocity = dataBall.Velocity.Sub(otherBall.DataBall.Velocity);
-                                }
-                                // to consider
+                                relativeVelocity = dataBall.Velocity.Sub(otherBall.DataBall.Velocity);
                                 double approachSpeed = delta.DotProd(relativeVelocity) / distance;
 
                                 if (approachSpeed < 0)

@@ -36,9 +36,9 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
 
         private void StartBalls()
         {
-            if(!int.TryParse(NumberOfBallsText,out int ballCount) || ballCount < 1 || ballCount > 10)
+            if(!int.TryParse(NumberOfBallsText,out int ballCount) || ballCount < 1 || ballCount > 100)
             {
-                ErrorMessage = "Please enter number between 1 and 10";
+                ErrorMessage = "Please enter number between 1 and 100";
                 return;
             }
 

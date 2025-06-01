@@ -64,17 +64,15 @@ namespace TP.ConcurrentProgramming.Data
         private bool disposed;
         private readonly object velocityLock = new object();
         private readonly object positionLock = new object();
+        private readonly object locker = new object();
 
         internal void Move()
         {
             IVector currentVelocity;
-            lock (velocityLock)
+            IVector newPosition;
+            lock(locker)
             {
                 currentVelocity = velocity;
-            }
-            IVector newPosition;
-            lock(positionLock)
-            {
                 newPosition = position.Add(currentVelocity);
                 position = newPosition;
                 NewPositionNotification?.Invoke(this, position);
