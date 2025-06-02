@@ -38,14 +38,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         public double Radius { get; } = BusinessLogicAbstractAPI.GetDimensions.BallDimension / 2.0;
         public Data.IBall DataBall => dataBall;
 
-        // to consider
-        public IVector GetCurrentPosition()
-        {
-            lock (locker)
-            {
-                return currentPosition;
-            }
-        }
         public void Dispose()
         {
             if (_disposed) return;
@@ -76,7 +68,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                 v1 = dataBall.Velocity;
                 v2 = other.DataBall.Velocity;
                 x1 = currentPosition;
-                x2 = other.GetCurrentPosition();
+                x2 = other.DataBall.Position;
 
                 Data.Vector dx = x1.Sub(x2);
                 Data.Vector dv = v1.Sub(v2);
@@ -146,7 +138,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                             if (otherBall == this) continue;
 
                             Vector delta;
-                            delta = currentPosition.Sub(otherBall.GetCurrentPosition());
+                            delta = currentPosition.Sub(otherBall.DataBall.Position);
                             double distance = delta.EuclideanNorm();
 
                             double minDistance = Radius * 2;

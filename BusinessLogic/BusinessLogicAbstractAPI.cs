@@ -65,7 +65,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
     event EventHandler<IPosition> NewPositionNotification;
     double Radius { get; }
     Data.IBall DataBall { get; }
-    IVector GetCurrentPosition();
     void Dispose();
   }
 }
