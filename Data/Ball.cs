@@ -8,16 +8,21 @@
 //
 //_____________________________________________________________________________________________________________________________________
 
+using System.Diagnostics;
+
 namespace TP.ConcurrentProgramming.Data
 {
     internal class Ball : IBall
     {
-        internal Ball(Vector initialPosition, Vector initialVelocity)
+        internal Ball(Vector initialPosition, Vector initialVelocity, int id)
         {
             position = initialPosition;
             velocity = initialVelocity;
             cancellationTokenSource = new CancellationTokenSource();
+            Id = id;
         }
+
+        public int Id { get; }
 
         public event EventHandler<IVector> NewPositionNotification;
 
@@ -27,7 +32,6 @@ namespace TP.ConcurrentProgramming.Data
         { 
             get
             {
-                // to consider
                 lock (velocityLock)
                 {
                     return velocity;
@@ -47,7 +51,6 @@ namespace TP.ConcurrentProgramming.Data
         {
             get
             {
-                // to consider
                 lock(positionLock)
                 {
                     return position;
@@ -65,17 +68,37 @@ namespace TP.ConcurrentProgramming.Data
         private readonly object velocityLock = new object();
         private readonly object positionLock = new object();
         private readonly object locker = new object();
+        private DateTime lastUpdateTime = DateTime.Now;
+
 
         internal void Move()
         {
             IVector currentVelocity;
             IVector newPosition;
+            
+            var currentTime = DateTime.Now;
+            var deltaTime = (currentTime - lastUpdateTime).TotalSeconds;
+            lastUpdateTime = currentTime;
+
+            const double TIME_SCALE_FACTOR = 50.0;
+            const double CRITICAL_TIME_THRESHOLD_MS = 100.0;
+            var scaledDeltaTime = deltaTime * TIME_SCALE_FACTOR;
+
+            if (deltaTime * 1000 > CRITICAL_TIME_THRESHOLD_MS)
+            {
+                DiagnosticLogger.Instance.LogBallState(this, "Time exceeded");
+                return;
+            }
+
             lock(locker)
             {
                 currentVelocity = velocity;
-                newPosition = position.Add(currentVelocity);
+                var scaledVelocity = currentVelocity.Mul(scaledDeltaTime);
+                newPosition = position.Add(scaledVelocity);
                 position = newPosition;
                 NewPositionNotification?.Invoke(this, position);
+                
+                DiagnosticLogger.Instance.LogBallState(this);
             }
         }
 

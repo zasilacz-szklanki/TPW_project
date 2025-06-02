@@ -63,5 +63,9 @@
                 <ScaleTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}"/>
             </TextBlock.LayoutTransform>
         </TextBlock>
+
+        <TextBlock Grid.Row="3" Text="{Binding TimeExceededMessage}" 
+                   Foreground="Red" FontWeight="Bold" Margin="10"
+                   TextWrapping="Wrap" HorizontalAlignment="Center"/>
     </Grid>
 </Window>

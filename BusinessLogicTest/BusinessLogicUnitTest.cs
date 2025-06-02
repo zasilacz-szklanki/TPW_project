@@ -150,12 +150,20 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             public double Radius => 14.0;
             public double TableWidth => 400.0;
             public double TableHeight => 420.0;
-            public event EventHandler<IVector>? NewPositionNotification = null;
+
+                public int Id => throw new NotImplementedException();
+
+                public event EventHandler<IVector>? NewPositionNotification = null;
 
             public void Dispose()
             { }
 
                 public void setVelocity(IVector velocity)
+                {
+                    throw new NotImplementedException();
+                }
+
+                public void StartMoving()
                 {
                     throw new NotImplementedException();
                 }

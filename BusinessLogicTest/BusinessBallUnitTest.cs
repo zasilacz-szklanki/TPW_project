@@ -41,11 +41,18 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
             public Data.IVector Position => throw new NotImplementedException();
 
+            public int Id => throw new NotImplementedException();
+
             public event EventHandler<Data.IVector>? NewPositionNotification;
 
       public void Dispose() { }
 
             public void setVelocity(Data.IVector velocity)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void StartMoving()
             {
                 throw new NotImplementedException();
             }

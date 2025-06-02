@@ -97,6 +97,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
         public void Dispose()
         {
             underneathBall.NewPositionNotification -= NewPositionNotification;
+            underneathBall.Dispose();
         }
         #endregion public
 

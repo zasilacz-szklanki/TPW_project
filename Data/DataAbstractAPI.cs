@@ -54,8 +54,10 @@ namespace TP.ConcurrentProgramming.Data
 
   public interface IBall:IDisposable
   {
-    event EventHandler<IVector> NewPositionNotification;
     IVector Position { get; }
     IVector Velocity { get; set; }
+    event EventHandler<IVector> NewPositionNotification;
+    void StartMoving();
+    int Id { get; }
   }
 }

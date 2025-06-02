@@ -82,6 +82,17 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+        private string? timeExceededMessage;
+        public string? TimeExceededMessage
+        {
+            get => timeExceededMessage;
+            private set
+            {
+                timeExceededMessage = value;
+                RaisePropertyChanged();
+            }
+        }
         #endregion
 
         #region public API

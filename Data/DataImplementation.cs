@@ -33,20 +33,20 @@ namespace TP.ConcurrentProgramming.Data
       Random random = new Random();
       for (int i = 0; i < numberOfBalls; i++)
       {
-        //Vector startingPosition = new(0, 0);
         Vector startingPosition = new(random.Next(20, 400 - 20), random.Next(20, 400 - 20));
-        //Vector startingVelocity = new(0, 0);
         Vector startingVelocity = new(random.Next(-3, 3), random.Next(-3, 3));
-        Ball newBall = new(startingPosition, startingVelocity);
+        Ball newBall = new(startingPosition, startingVelocity, i + 1);
         upperLayerHandler(startingPosition, newBall);
 
-        if(newBall is Ball ballImplementation){ 
+        if(newBall is Ball ballImplementation)
+        { 
             ballImplementation.StartMoving();
         }
 
-        lock(locker){ 
+        lock(locker)
+        { 
              BallsList.Add(newBall);                  
-         }
+        }
       }
     }
 
